@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102b46">
+  <title>Nyumba Zambia | Find Your Home</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #172b40;
+      background: #f5f7fa;
+    }
+    header {
+      background: #102b46;
+      color: white;
+      padding: 20px;
+    }
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand { font-size: 22px; font-weight: bold; }
+    .brand span { color: #f2b84b; }
+    .nav a { color: white; text-decoration: none; }
+    .hero {
+      background: #183c5d;
+      color: white;
+      text-align: center;
+      padding: 55px 18px;
+    }
+    .hero h1 { font-size: 34px; margin: 0 0 12px; }
+    .hero p { color: #d5e2ed; }
+    .search {
+      max-width: 750px;
+      margin: 25px auto 0;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    input, select, button {
+      padding: 14px;
+      border: 1px solid #d5dce5;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .search input { flex: 1; min-width: 170px; }
+    button {
+      background: #e8a832;
+      color: #172b40;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    main {
+      max-width: 1100px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+    .section-title { margin-bottom: 20px; }
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .category {
+      background: white;
+      padding: 18px 8px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #e3e8ee;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .properties {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .property {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e3e8ee;
+    }
+    .property img {
+      width: 100%;
+      height: 175px;
+      object-fit: cover;
+      background: #dce4ec;
+    }
+    .details { padding: 16px; }
+    .price {
+      color: #16834b;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .tag {
+      display: inline-block;
+      background: #e6f4ec;
+      color: #16834b;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .details button { width: 100%; margin-top: 12px; }
+    .empty {
+      text-align: center;
+      padding: 30px;
+      display: none;
+    }
+    .post {
+      background: #eaf0f6;
+      padding: 35px 18px;
+      text-align: center;
+      border-radius: 12px;
+      margin-top: 40px;
+    }
+    footer {
+      background: #102b46;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 45px;
+    }
+    @media(max-width: 480px) {
+      .hero h1 { font-size: 27px; }
+      .categories { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">NYUMBA <span>ZAMBIA</span></div>
+    <a href="#post">Advertise a property</a>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Find a place to call home.</h1>
+  <p>Discover houses and properties across Zambia.</p>
+
+  <div class="search">
+    <input id="location" placeholder="Enter city or neighbourhood">
+    <select id="type">
+      <option value="all">Rent or sale</option>
+      <option value="rent">For rent</option>
+      <option value="sale">For sale</option>
+    </select>
+    <button onclick="searchProperties()">Search</button>
+  </div>
+</section>
+
+<main>
+  <h2 class="section-title">Explore properties</h2>
+
+  <div class="categories">
+    <div class="category" onclick="chooseType('rent')">🏠 Houses for rent</div>
+    <div class="category" onclick="chooseType('sale')">🏡 Houses for sale</div>
+    <div class="category" onclick="chooseType('all')">🏢 All properties</div>
+  </div>
+
+  <h2 class="section-title">Featured properties</h2>
+  <p>Discover available properties around Zambia.</p>
+
+  <div class="properties" id="properties">
+
+    <article class="property" data-location="lusaka" data-type="rent">
+      <img src="https://placehold.co/600x400/183c5d/ffffff?text=House+Photo" alt="Sample house">
+      <div class="details">
+        <span class="tag">FOR RENT · DEMO</span>
+        <h3>Modern Family House</h3>
+        <p>Lusaka, Zambia</p>
+        <p>3 Bedrooms · 2 Bathrooms</p>
+        <div class="price">K5,000 / month</div>
+        <button onclick="demo()">View property</button>
+      </div>
+    </article>
+
+    <article class="property" data-location="ndola" data-type="sale">
+      <img src="https://placehold.co/600x400/183c5d/ffffff?text=Property+Photo" alt="Sample property">
+      <div class="details">
+        <span class="tag">FOR SALE · DEMO</span>
+        <h3>Residential Property</h3>
+        <p>Ndola, Zambia</p>
+        <p>4 Bedrooms · 2 Bathrooms</p>
+        <div class="price">K850,000</div>
+        <button onclick="demo()">View property</button>
+      </div>
+    </article>
+
+    <article class="property" data-location="kitwe" data-type="rent">
+      <img src="https://placehold.co/600x400/183c5d/ffffff?text=Apartment+Photo" alt="Sample apartment">
+      <div class="details">
+        <span class="tag">FOR RENT · DEMO</span>
+        <h3>Modern Apartment</h3>
+        <p>Kitwe, Zambia</p>
+        <p>2 Bedrooms · 1 Bathroom</p>
+        <div class="price">K3,000 / month</div>
+        <button onclick="demo()">View property</button>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="empty" id="empty">
+    No matching properties found. Try another location.
+  </div>
+
+  <section class="post" id="post">
+    <h2>Have a property to advertise?</h2>
+    <p>Reach people searching for houses across Zambia.</p>
+    <p>Basic K20 · Standard K50 · Premium K100</p>
+    <button onclick="demo()">Advertise your property</button>
+  </section>
+</main>
+
+<footer>
+  <h3>NYUMBA ZAMBIA</h3>
+  <p>Find a home. Discover opportunities.</p>
+  <p>© 2026 Nyumba Zambia</p>
+</footer>
+
+<script>
+  function demo() {
+    alert("Welcome to Nyumba Zambia! Property registration and viewing will be available soon.");
+  }
+
+  function chooseType(type) {
+    document.getElementById("type").value = type;
+    searchProperties();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+
+  function searchProperties() {
+    const location = document.getElementById("location").value.toLowerCase().trim();
+    const type = document.getElementById("type").value;
+    const cards = document.querySelectorAll(".property");
+    let found = 0;
+
+    cards.forEach(card => {
+      const matchesLocation = card.dataset.location.includes(location);
+      const matchesType = type === "all" || card.dataset.type === type;
+      const visible = matchesLocation && matchesType;
+      card.style.display = visible ? "block" : "none";
+      if (visible) found++;
+    });
+
+    document.getElementById("empty").style.display =
+      found === 0 ? "block" : "none";
+  }
+</script>
+
+</body>
+</html>
