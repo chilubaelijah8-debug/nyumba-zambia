@@ -90,7 +90,7 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 
 <section id="postPanel" class="panel hidden">
 <h2>Advertise your property</h2>
-<p class="small">Your listing will be reviewed before it becomes public.</p>
+<p class="small">Your listing will be published immediately after submission.</p>
 <input id="propertyTitle" placeholder="Property title">
 <textarea id="description" placeholder="Describe the property"></textarea>
 <select id="listingType">
@@ -109,8 +109,7 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <input id="bedrooms" type="number" min="0" placeholder="Number of bedrooms">
 <input id="bathrooms" type="number" min="0" placeholder="Number of bathrooms">
 <label>Property photos (maximum 5)</label>
-<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-<button onclick="submitProperty()">Submit property for approval</button>
+<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple><button onclick="submitProperty()">Publish property</button>
 </section>
 
 <h2>Available properties</h2>
@@ -270,12 +269,11 @@ async function submitProperty() {
     location,area,
     bedrooms,bathrooms,
     photo_urls:photoUrls,
-    status:"pending"
+    status:"approved"
   });
 
   if(error) return message("Could not submit listing: "+error.message,true);
-
-  message("Property submitted successfully! It is awaiting administrator approval.");
+message("Property published successfully! It is now visible to everyone.");
   document.getElementById("propertyTitle").value="";
   document.getElementById("description").value="";
   document.getElementById("price").value="";
