@@ -25,6 +25,18 @@ main{max-width:1100px;margin:30px auto;padding:0 15px}
 section.panel,.property{background:white;padding:20px;border-radius:10px;margin:22px 0;border:1px solid #e1e6ec}
 h2{color:#183c5d}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .actions a{
+  display:inline-block;
+  padding:12px 16px;
+  border-radius:7px;
+  text-decoration:none;
+  font-weight:bold;
+  background:#16834b;
+  color:white;
+}
+.actions a:last-child{
+  background:#183c5d;
+}
 .properties{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
 .property{padding:0;overflow:hidden;margin:0}
 .property img{width:100%;height:180px;object-fit:cover;background:#dce4ec}
@@ -230,7 +242,7 @@ async function submitProperty() {
   const price = Number(document.getElementById("price").value);
   const location = document.getElementById("location").value.trim();
   const area = document.getElementById("area").value.trim();
-  const bedrooms = Number(document.getElementById("bedrooms").value || 0);
+  const contactPhone = document.getElementById("contactPhone").value.trim();
   const bathrooms = Number(document.getElementById("bathrooms").value || 0);
   const files = Array.from(document.getElementById("photos").files);
 
@@ -267,9 +279,10 @@ async function submitProperty() {
     property_type:propertyType,
     price_zmw:price,
     location,area,
-    bedrooms,bathrooms,
-    photo_urls:photoUrls,
-    status:"approved"
+contact_phone:contactPhone,
+bedrooms,bathrooms,
+photo_urls:photoUrls,
+status:"approved"
   });
 
   if(error) return message("Could not submit listing: "+error.message,true);
@@ -335,9 +348,34 @@ async function loadProperties() {
     price.className = "price";
     price.textContent = "K"+Number(property.price_zmw).toLocaleString("en-ZM")+(property.listing_type === "rent" ? " / month" : "");
 
-    const description = document.createElement("p");
-    description.textContent = property.description || "";
+    
+if (property.contact_phone) {
+  let phoneDigits = property.contact_phone.replace(/\D/g, "");
 
+  if (phoneDigits.startsWith("0")) {
+    phoneDigits = "260" + phoneDigits.substring(1);
+  } else if (phoneDigits.length === 9) {
+    phoneDigits = "260" + phoneDigits;
+  }
+
+  const contactLinks = document.createElement("div");
+  contactLinks.className = "actions";
+
+  const whatsapp = document.createElement("a");
+  whatsapp.href = "https://wa.me/" + phoneDigits;
+  whatsapp.textContent = "WhatsApp";
+  whatsapp.target = "_blank";
+  whatsapp.rel = "noopener noreferrer";
+
+  const call = document.createElement("a");
+  call.href = "tel:" + property.contact_phone;
+  call.textContent = "Call landlord / agent";
+
+  contactLinks.append(whatsapp, call);
+  details.append(contactLinks);
+}
+
+if (property.contact_phone) {
     details.append(tag,heading,place,rooms,price,description);
     if(img.src) card.append(img);
     card.append(details);
