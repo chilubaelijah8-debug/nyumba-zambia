@@ -2,264 +2,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#102b46">
-  <title>Nyumba Zambia | Find Your Home</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #172b40;
-      background: #f5f7fa;
-    }
-    header {
-      background: #102b46;
-      color: white;
-      padding: 20px;
-    }
-    .nav {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-    .brand { font-size: 22px; font-weight: bold; }
-    .brand span { color: #f2b84b; }
-    .nav a { color: white; text-decoration: none; }
-    .hero {
-      background: #183c5d;
-      color: white;
-      text-align: center;
-      padding: 55px 18px;
-    }
-    .hero h1 { font-size: 34px; margin: 0 0 12px; }
-    .hero p { color: #d5e2ed; }
-    .search {
-      max-width: 750px;
-      margin: 25px auto 0;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    input, select, button {
-      padding: 14px;
-      border: 1px solid #d5dce5;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-    .search input { flex: 1; min-width: 170px; }
-    button {
-      background: #e8a832;
-      color: #172b40;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    main {
-      max-width: 1100px;
-      margin: 35px auto;
-      padding: 0 16px;
-    }
-    .section-title { margin-bottom: 20px; }
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 40px;
-    }
-    .category {
-      background: white;
-      padding: 18px 8px;
-      border-radius: 10px;
-      text-align: center;
-      border: 1px solid #e3e8ee;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .properties {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-    }
-    .property {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #e3e8ee;
-    }
-    .property img {
-      width: 100%;
-      height: 175px;
-      object-fit: cover;
-      background: #dce4ec;
-    }
-    .details { padding: 16px; }
-    .price {
-      color: #16834b;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .tag {
-      display: inline-block;
-      background: #e6f4ec;
-      color: #16834b;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-    .details button { width: 100%; margin-top: 12px; }
-    .empty {
-      text-align: center;
-      padding: 30px;
-      display: none;
-    }
-    .post {
-      background: #eaf0f6;
-      padding: 35px 18px;
-      text-align: center;
-      border-radius: 12px;
-      margin-top: 40px;
-    }
-    footer {
-      background: #102b46;
-      color: white;
-      text-align: center;
-      padding: 25px;
-      margin-top: 45px;
-    }
-    @media(max-width: 480px) {
-      .hero h1 { font-size: 27px; }
-      .categories { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b46">
+<title>Nyumba Zambia | Find Your Home</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:#172b40;background:#f5f7fa}
+header{background:#102b46;color:white;padding:18px}
+.nav{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:23px;font-weight:bold}
+.brand span{color:#f2b84b}
+button{background:#e8a832;color:#172b40;border:0;border-radius:7px;padding:12px 16px;font-weight:bold;cursor:pointer}
+input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccd5df;border-radius:7px;font-size:15px}
+.hero{background:#183c5d;color:white;text-align:center;padding:48px 16px}
+.hero h1{font-size:32px}
+.hero p{color:#d5e2ed}
+.search{max-width:700px;margin:20px auto;display:flex;gap:8px;flex-wrap:wrap}
+.search input{flex:1;min-width:180px}
+.search select{width:auto;flex:1;min-width:140px}
+main{max-width:1100px;margin:30px auto;padding:0 15px}
+section.panel,.property{background:white;padding:20px;border-radius:10px;margin:22px 0;border:1px solid #e1e6ec}
+h2{color:#183c5d}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.properties{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.property{padding:0;overflow:hidden;margin:0}
+.property img{width:100%;height:180px;object-fit:cover;background:#dce4ec}
+.details{padding:15px}
+.price{font-size:20px;color:#16834b;font-weight:bold}
+.tag{font-size:12px;background:#e6f4ec;color:#16834b;padding:5px 8px;border-radius:20px}
+.hidden{display:none!important}
+.notice{padding:12px;background:#eef3f8;border-radius:7px;margin:10px 0}
+.error{color:#b42318}
+.success{color:#16834b}
+footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:45px}
+.small{font-size:13px;color:#667788}
+@media(max-width:480px){.hero h1{font-size:26px}.search{display:block}}
+</style>
 </head>
 <body>
 
 <header>
-  <div class="nav">
-    <div class="brand">NYUMBA <span>ZAMBIA</span></div>
-    <a href="#post">Advertise a property</a>
-  </div>
+<div class="nav">
+<div class="brand">NYUMBA <span>ZAMBIA</span></div>
+<div class="actions">
+<button id="accountBtn" onclick="showAuth()">Register / Login</button>
+<button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+</div>
+</div>
 </header>
 
 <section class="hero">
-  <h1>Find a place to call home.</h1>
-  <p>Discover houses and properties across Zambia.</p>
-
-  <div class="search">
-    <input id="location" placeholder="Enter city or neighbourhood">
-    <select id="type">
-      <option value="all">Rent or sale</option>
-      <option value="rent">For rent</option>
-      <option value="sale">For sale</option>
-    </select>
-    <button onclick="searchProperties()">Search</button>
-  </div>
+<h1>Find a place to call home.</h1>
+<p>Discover houses and properties across Zambia.</p>
+<div class="search">
+<input id="searchLocation" placeholder="Enter city or neighbourhood">
+<select id="searchType">
+<option value="all">Rent or sale</option>
+<option value="rent">For rent</option>
+<option value="sale">For sale</option>
+</select>
+<button onclick="loadProperties()">Search</button>
+</div>
 </section>
 
 <main>
-  <h2 class="section-title">Explore properties</h2>
+<div id="message" class="notice hidden"></div>
 
-  <div class="categories">
-    <div class="category" onclick="chooseType('rent')">🏠 Houses for rent</div>
-    <div class="category" onclick="chooseType('sale')">🏡 Houses for sale</div>
-    <div class="category" onclick="chooseType('all')">🏢 All properties</div>
-  </div>
+<section id="authPanel" class="panel hidden">
+<h2>Landlord and agent account</h2>
+<p class="small">Create an account or sign in to advertise a property.</p>
+<input id="fullName" placeholder="Full name (for registration)">
+<input id="phone" placeholder="Phone number">
+<select id="accountType">
+<option value="landlord">I am a landlord</option>
+<option value="agent">I am a property agent</option>
+</select>
+<input id="email" type="email" placeholder="Email address">
+<input id="password" type="password" placeholder="Password (minimum 6 characters)">
+<div class="actions">
+<button onclick="register()">Create account</button>
+<button onclick="login()">Login</button>
+<button onclick="hideAuth()">Close</button>
+</div>
+<p class="small">If email confirmation is enabled, check your email before logging in.</p>
+</section>
 
-  <h2 class="section-title">Featured properties</h2>
-  <p>Discover available properties around Zambia.</p>
+<section id="postPanel" class="panel hidden">
+<h2>Advertise your property</h2>
+<p class="small">Your listing will be reviewed before it becomes public.</p>
+<input id="propertyTitle" placeholder="Property title">
+<textarea id="description" placeholder="Describe the property"></textarea>
+<select id="listingType">
+<option value="rent">For rent</option>
+<option value="sale">For sale</option>
+</select>
+<select id="propertyType">
+<option value="house">House</option>
+<option value="apartment">Apartment</option>
+<option value="flat">Flat</option>
+<option value="commercial">Commercial property</option>
+</select>
+<input id="price" type="number" min="1" placeholder="Price in Zambian Kwacha (ZMW)">
+<input id="location" placeholder="Town or city (e.g. Lusaka)">
+<input id="area" placeholder="Neighbourhood or area">
+<input id="bedrooms" type="number" min="0" placeholder="Number of bedrooms">
+<input id="bathrooms" type="number" min="0" placeholder="Number of bathrooms">
+<label>Property photos (maximum 5)</label>
+<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<button onclick="submitProperty()">Submit property for approval</button>
+</section>
 
-  <div class="properties" id="properties">
-
-    <article class="property" data-location="lusaka" data-type="rent">
-      <img src="https://placehold.co/600x400/183c5d/ffffff?text=House+Photo" alt="Sample house">
-      <div class="details">
-        <span class="tag">FOR RENT · DEMO</span>
-        <h3>Modern Family House</h3>
-        <p>Lusaka, Zambia</p>
-        <p>3 Bedrooms · 2 Bathrooms</p>
-        <div class="price">K5,000 / month</div>
-        <button onclick="demo()">View property</button>
-      </div>
-    </article>
-
-    <article class="property" data-location="ndola" data-type="sale">
-      <img src="https://placehold.co/600x400/183c5d/ffffff?text=Property+Photo" alt="Sample property">
-      <div class="details">
-        <span class="tag">FOR SALE · DEMO</span>
-        <h3>Residential Property</h3>
-        <p>Ndola, Zambia</p>
-        <p>4 Bedrooms · 2 Bathrooms</p>
-        <div class="price">K850,000</div>
-        <button onclick="demo()">View property</button>
-      </div>
-    </article>
-
-    <article class="property" data-location="kitwe" data-type="rent">
-      <img src="https://placehold.co/600x400/183c5d/ffffff?text=Apartment+Photo" alt="Sample apartment">
-      <div class="details">
-        <span class="tag">FOR RENT · DEMO</span>
-        <h3>Modern Apartment</h3>
-        <p>Kitwe, Zambia</p>
-        <p>2 Bedrooms · 1 Bathroom</p>
-        <div class="price">K3,000 / month</div>
-        <button onclick="demo()">View property</button>
-      </div>
-    </article>
-
-  </div>
-
-  <div class="empty" id="empty">
-    No matching properties found. Try another location.
-  </div>
-
-  <section class="post" id="post">
-    <h2>Have a property to advertise?</h2>
-    <p>Reach people searching for houses across Zambia.</p>
-    <p>Basic K20 · Standard K50 · Premium K100</p>
-    <button onclick="demo()">Advertise your property</button>
-  </section>
+<h2>Available properties</h2>
+<p class="small">Browse approved property advertisements.</p>
+<div id="properties" class="properties">
+<p>Loading properties...</p>
+</div>
 </main>
 
 <footer>
-  <h3>NYUMBA ZAMBIA</h3>
-  <p>Find a home. Discover opportunities.</p>
-  <p>© 2026 Nyumba Zambia</p>
+<h3>NYUMBA ZAMBIA</h3>
+<p>Find a home. Discover opportunities.</p>
+<p>© 2026 Nyumba Zambia</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  function demo() {
-    alert("Welcome to Nyumba Zambia! Property registration and viewing will be available soon.");
+const SUPABASE_URL = "https://biblnnyzdzeygxytsdsp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_R1CpZS4BlRwNj1G_212xpQ_SgMhG21i";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+function message(text, isError=false) {
+  const box = document.getElementById("message");
+  box.textContent = text;
+  box.classList.remove("hidden","error","success");
+  box.classList.add(isError ? "error" : "success");
+}
+
+function showAuth() {
+  document.getElementById("authPanel").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function hideAuth() {
+  document.getElementById("authPanel").classList.add("hidden");
+}
+
+async function refreshUser() {
+  const {data:{user}} = await db.auth.getUser();
+  currentUser = user;
+  document.getElementById("accountBtn").classList.toggle("hidden",!!user);
+  document.getElementById("logoutBtn").classList.toggle("hidden",!user);
+  document.getElementById("postPanel").classList.toggle("hidden",!user);
+}
+
+async function register() {
+  const name = document.getElementById("fullName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const type = document.getElementById("accountType").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!name || !email || password.length < 6) {
+    return message("Enter your name, email and a password of at least 6 characters.",true);
   }
 
-  function chooseType(type) {
-    document.getElementById("type").value = type;
-    searchProperties();
-    window.scrollTo({top: 0, behavior: "smooth"});
+  const {data,error} = await db.auth.signUp({
+    email,password,
+    options:{data:{full_name:name,phone,account_type:type}}
+  });
+
+  if(error) return message(error.message,true);
+
+  if(data.user && data.session) {
+    await saveProfile(data.user,name,phone,type);
+    await refreshUser();
   }
 
-  function searchProperties() {
-    const location = document.getElementById("location").value.toLowerCase().trim();
-    const type = document.getElementById("type").value;
-    const cards = document.querySelectorAll(".property");
-    let found = 0;
+  message(data.session ?
+    "Account created! You can now advertise a property." :
+    "Account created. Check your email for a confirmation link, then log in.");
+}
 
-    cards.forEach(card => {
-      const matchesLocation = card.dataset.location.includes(location);
-      const matchesType = type === "all" || card.dataset.type === type;
-      const visible = matchesLocation && matchesType;
-      card.style.display = visible ? "block" : "none";
-      if (visible) found++;
-    });
+async function saveProfile(user,name,phone,type) {
+  const {error} = await db.from("profiles").upsert({
+    id:user.id,
+    full_name:name || user.user_metadata?.full_name || "User",
+    phone:phone || user.user_metadata?.phone || null,
+    account_type:type || user.user_metadata?.account_type || "landlord"
+  });
+  if(error) console.error("Profile setup:",error.message);
+}
 
-    document.getElementById("empty").style.display =
-      found === 0 ? "block" : "none";
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const {data,error} = await db.auth.signInWithPassword({email,password});
+  if(error) return message(error.message,true);
+
+  currentUser = data.user;
+  await saveProfile(
+    data.user,
+    data.user.user_metadata?.full_name,
+    data.user.user_metadata?.phone,
+    data.user.user_metadata?.account_type
+  );
+  await refreshUser();
+  hideAuth();
+  message("Welcome back! You are logged in.");
+}
+
+async function logout() {
+  const {error} = await db.auth.signOut();
+  if(error) return message(error.message,true);
+  await refreshUser();
+  message("You have logged out.");
+}
+
+async function submitProperty() {
+  if(!currentUser) return showAuth();
+
+  const title = document.getElementById("propertyTitle").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const type = document.getElementById("listingType").value;
+  const propertyType = document.getElementById("propertyType").value;
+  const price = Number(document.getElementById("price").value);
+  const location = document.getElementById("location").value.trim();
+  const area = document.getElementById("area").value.trim();
+  const bedrooms = Number(document.getElementById("bedrooms").value || 0);
+  const bathrooms = Number(document.getElementById("bathrooms").value || 0);
+  const files = Array.from(document.getElementById("photos").files);
+
+  if(!title || !price || price <= 0 || !location) {
+    return message("Please enter a title, valid price and location.",true);
   }
+  if(files.length > 5) return message("You can upload a maximum of 5 photos.",true);
+
+  for(const file of files) {
+    if(!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+      return message("Use JPG, PNG or WebP photos only.",true);
+    }
+    if(file.size > 5*1024*1024) {
+      return message("Each photo must be smaller than 5 MB.",true);
+    }
+  }
+
+  message("Uploading photos and submitting your property...");
+
+  const photoUrls = [];
+  for(const file of files) {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+    const path = currentUser.id + "/" + Date.now() + "_" + safeName;
+    const {error} = await db.storage.from("property-images").upload(path,file);
+    if(error) return message("Photo upload failed: "+error.message,true);
+    const {data} = db.storage.from("property-images").getPublicUrl(path);
+    photoUrls.push(data.publicUrl);
+  }
+
+  const {error} = await db.from("properties").insert({
+    owner_id:currentUser.id,
+    title,description,
+    listing_type:type,
+    property_type:propertyType,
+    price_zmw:price,
+    location,area,
+    bedrooms,bathrooms,
+    photo_urls:photoUrls,
+    status:"pending"
+  });
+
+  if(error) return message("Could not submit listing: "+error.message,true);
+
+  message("Property submitted successfully! It is awaiting administrator approval.");
+  document.getElementById("propertyTitle").value="";
+  document.getElementById("description").value="";
+  document.getElementById("price").value="";
+  document.getElementById("location").value="";
+  document.getElementById("area").value="";
+  document.getElementById("photos").value="";
+}
+
+async function loadProperties() {
+  const container = document.getElementById("properties");
+  container.textContent = "Loading properties...";
+
+  let query = db.from("properties").select("*").eq("status","approved").order("created_at",{ascending:false});
+
+  const location = document.getElementById("searchLocation").value.trim();
+  const type = document.getElementById("searchType").value;
+
+  if(location) query = query.ilike("location","%"+location+"%");
+  if(type !== "all") query = query.eq("listing_type",type);
+
+  const {data,error} = await query;
+
+  if(error) {
+    container.textContent = "Could not load properties: "+error.message;
+    return;
+  }
+
+  if(!data.length) {
+    container.textContent = "No approved properties found yet. Please check again later.";
+    return;
+  }
+
+  container.innerHTML = "";
+  data.forEach(property => {
+    const card = document.createElement("article");
+    card.className = "property";
+
+    const img = document.createElement("img");
+    img.alt = "Property photo";
+    img.src = property.photo_urls?.[0] || "https://placehold.co/600x400/183c5d/ffffff?text=Nyumba+Zambia";
+
+    const details = document.createElement("div");
+    details.className = "details";
+
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = property.listing_type === "rent" ? "FOR RENT" : "FOR SALE";
+
+    const heading = document.createElement("h3");
+    heading.textContent = property.title;
+
+    const place = document.createElement("p");
+    place.textContent = [property.area,property.location,"Zambia"].filter(Boolean).join(", ");
+
+    const rooms = document.createElement("p");
+    rooms.textContent = property.bedrooms+" Bedrooms · "+property.bathrooms+" Bathrooms";
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = "K"+Number(property.price_zmw).toLocaleString("en-ZM")+(property.listing_type === "rent" ? " / month" : "");
+
+    const description = document.createElement("p");
+    description.textContent = property.description || "";
+
+    details.append(tag,heading,place,rooms,price,description);
+    if(img.src) card.append(img);
+    card.append(details);
+    container.append(card);
+  });
+}
+
+db.auth.onAuthStateChange(() => {
+  setTimeout(refreshUser,0);
+});
+
+refreshUser();
+loadProperties();
 </script>
-
 </body>
 </html>
