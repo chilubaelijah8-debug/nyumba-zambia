@@ -1,4 +1,4 @@
-<header>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -188,6 +188,8 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 
+let currentUser = null;
+
 async function shareNyumba() {
   const shareData = {
     title: "Nyumba Zambia",
@@ -207,25 +209,9 @@ async function shareNyumba() {
     }
   }
 }
-  const shareData = {
-    title: "Nyumba Zambia",
-    text: "Find houses and properties across Zambia with Nyumba Zambia!",
-    url: "https://nyumba-zambia.chilubaelijah8.workers.dev"
-  };
 
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else {
-      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
-    }
-  } catch (error) {
-    if (error.name !== "AbortError") {
-      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
-    }
-  }
-}
-  let propertyMap = null;
+let propertyMap = null;
+
 let propertyMarker = null;
 
 function showLocationMap() {
@@ -656,4 +642,4 @@ loadProperties();
 </script>
 </body>
 </html>
-</header>
+
