@@ -1,0 +1,10 @@
+{
+  "name": "Nyumba Zambia",
+  "short_name": "Nyumba",
+  "description": "Find houses, apartments and land across Zambia.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#102b46"
+}
