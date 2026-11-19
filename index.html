@@ -119,6 +119,19 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <input id="price" type="number" min="1" placeholder="Price in Zambian Kwacha (ZMW)">
 <input id="location" placeholder="Town or city (e.g. Lusaka)">
 <input id="area" placeholder="Neighbourhood or area">
+  <label>Google Maps location link (optional)</label>
+<input id="mapsUrl" type="url" placeholder="Paste Google Maps link here">
+
+<p class="small">Or choose the property's location directly on the map.</p>
+
+<button type="button" onclick="showLocationMap()">Choose Location on Map</button>
+
+<div id="locationMap" class="hidden" style="height:300px;margin:12px 0;border-radius:10px;"></div>
+
+<p id="selectedCoordinates" class="small">No map location selected yet.</p>
+
+<input id="latitude" type="hidden">
+<input id="longitude" type="hidden">
 <input id="contactPhone" type="tel" placeholder="Contact phone / WhatsApp number">
   <input id="bedrooms" type="number" min="0" placeholder="Number of bedrooms">
 <input id="bathrooms" type="number" min="0" placeholder="Number of bathrooms">
