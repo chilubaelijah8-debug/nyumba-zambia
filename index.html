@@ -103,6 +103,44 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <main>
 <div id="message" class="notice hidden"></div>
 
+<section id="subscriptionPanel" class="panel hidden">
+  <h2>Advertise with Nyumba Zambia</h2>
+  <p>Choose a 30-day advertising package.</p>
+
+  <label>Choose your package</label>
+  <select id="subscriptionPlan">
+    <option value="Basic">Basic - K20 / 30 days</option>
+    <option value="Standard">Standard - K50 / 30 days</option>
+    <option value="Premium">Premium - K100 / 30 days</option>
+  </select>
+
+  <h3>Payment details</h3>
+  <p><strong>MTN Mobile Money:</strong> +260 760 387 200</p>
+  <p><strong>Airtel Money:</strong> +260 777 212 286</p>
+
+  <label>Payment method</label>
+  <select id="paymentMethod">
+    <option value="MTN Mobile Money">MTN Mobile Money</option>
+    <option value="Airtel Money">Airtel Money</option>
+  </select>
+
+  <label>Phone number used to pay</label>
+  <input id="senderPhone" type="tel"
+    placeholder="Your mobile money number">
+
+  <label>Transaction reference</label>
+  <input id="transactionReference"
+    placeholder="Enter your payment transaction reference">
+
+  <button type="button" onclick="submitSubscriptionPayment()">
+    Submit Payment Details
+  </button>
+
+  <p id="subscriptionMessage" class="notice">
+    Your subscription will activate after payment verification.
+  </p>
+</section>
+
 <section id="authPanel" class="panel hidden">
 <h2>Landlord and agent account</h2>
 <p class="small">Create an account or sign in to advertise a property.</p>
@@ -264,15 +302,56 @@ function hideAuth() {
   document.getElementById("authPanel").classList.add("hidden");
 }
 
+
 async function refreshUser() {
   const {data:{user}} = await db.auth.getUser();
   currentUser = user;
-  document.getElementById("accountBtn").classList.toggle("hidden",!!user);
-  document.getElementById("logoutBtn").classList.toggle("hidden",!user);
-  document.getElementById("postPanel").classList.toggle("hidden",!user);
-  document.getElementById("managePanel").classList.toggle("hidden",!user);
-  if (user) await loadMyProperties();
+
+  document.getElementById("accountBtn").classList.toggle("hidden", !!user);
+  document.getElementById("logoutBtn").classList.toggle("hidden", !user);
+
+  const subscriptionPanel = document.getElementById("subscriptionPanel");
+  const postPanel = document.getElementById("postPanel");
+  const managePanel = document.getElementById("managePanel");
+
+  if (!user) {
+    subscriptionPanel.classList.add("hidden");
+    postPanel.classList.add("hidden");
+    managePanel.classList.add("hidden");
+    return;
+  }
+
+  subscriptionPanel.classList.remove("hidden");
+  managePanel.classList.remove("hidden");
+
+  const {data: subscription, error} = await db
+    .from("user_subscriptions")
+    .select("plan,status,expires_at")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Subscription check:", error.message);
+  }
+
+  const subscriptionActive =
+    !error &&
+    subscription &&
+    subscription.status === "active" &&
+    subscription.expires_at &&
+    new Date(subscription.expires_at) > new Date();
+
+  postPanel.classList.toggle("hidden", !subscriptionActive);
+
+  if (subscriptionActive) {
+    subscriptionPanel.classList.add("hidden");
+  } else {
+    subscriptionPanel.classList.remove("hidden");
+  }
+
+  await loadMyProperties();
 }
+
 
 async function register() {
   const name = document.getElementById("fullName").value.trim();
@@ -336,6 +415,55 @@ async function logout() {
   if(error) return message(error.message,true);
   await refreshUser();
   message("You have logged out.");
+}
+
+async function submitSubscriptionPayment() {
+  if (!currentUser) {
+    return message("Please log in first.", true);
+  }
+
+  const plan = document.getElementById("subscriptionPlan").value;
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const senderPhone = document.getElementById("senderPhone").value.trim();
+  const reference = document.getElementById("transactionReference").value.trim();
+
+  const prices = {
+    Basic: 20,
+    Standard: 50,
+    Premium: 100
+  };
+
+  if (!senderPhone || !reference) {
+    return message("Enter your payment phone number and transaction reference.", true);
+  }
+
+  const button = document.querySelector(
+    '#subscriptionPanel button[onclick="submitSubscriptionPayment()"]'
+  );
+
+  button.disabled = true;
+  button.textContent = "Submitting...";
+
+  const { error } = await db.from("subscription_payments").insert({
+    user_id: currentUser.id,
+    plan: plan,
+    amount_zmw: prices[plan],
+    payment_method: paymentMethod,
+    sender_phone: senderPhone,
+    transaction_reference: reference
+  });
+
+  button.disabled = false;
+  button.textContent = "Submit Payment Details";
+
+  if (error) {
+    return message("Payment submission failed: " + error.message, true);
+  }
+
+  document.getElementById("subscriptionMessage").textContent =
+    "Payment details submitted. Your subscription will activate after verification.";
+
+  message("Payment details submitted successfully. Await verification.");
 }
 
 async function submitProperty() {
