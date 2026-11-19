@@ -586,7 +586,13 @@ if (property.maps_url || (property.latitude != null && property.longitude != nul
 db.auth.onAuthStateChange(() => {
   setTimeout(refreshUser,0);
 });
-
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Nyumba app ready"))
+      .catch(error => console.error("Service worker error:", error));
+  });
+}
 refreshUser();
 loadProperties();
 </script>
