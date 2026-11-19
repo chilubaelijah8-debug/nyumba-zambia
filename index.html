@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102b46">
 <title>Nyumba Zambia | Find Your Home</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;color:#172b40;background:#f5f7fa}
@@ -151,6 +152,43 @@ const SUPABASE_KEY = "sb_publishable_R1CpZS4BlRwNj1G_212xpQ_SgMhG21i";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+  let propertyMap = null;
+let propertyMarker = null;
+
+function showLocationMap() {
+  const mapContainer = document.getElementById("locationMap");
+
+  mapContainer.classList.remove("hidden");
+
+  if (!propertyMap) {
+    propertyMap = L.map("locationMap").setView([-15.4167, 28.2833], 6);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(propertyMap);
+
+    propertyMap.on("click", function(e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+
+      if (propertyMarker) {
+        propertyMarker.setLatLng(e.latlng);
+      } else {
+        propertyMarker = L.marker(e.latlng).addTo(propertyMap);
+      }
+
+      document.getElementById("latitude").value = lat;
+      document.getElementById("longitude").value = lng;
+
+      document.getElementById("selectedCoordinates").textContent =
+        "Location selected: " + lat.toFixed(5) + ", " + lng.toFixed(5);
+    });
+  }
+
+  setTimeout(function() {
+    propertyMap.invalidateSize();
+  }, 200);
+  }
 
 function message(text, isError=false) {
   const box = document.getElementById("message");
@@ -250,6 +288,9 @@ async function submitProperty() {
   const propertyType = document.getElementById("propertyType").value;
   const price = Number(document.getElementById("price").value);
   const location = document.getElementById("location").value.trim();
+  const mapsUrl = document.getElementById("mapsUrl").value.trim();
+const latitude = document.getElementById("latitude").value;
+const longitude = document.getElementById("longitude").value;
   const area = document.getElementById("area").value.trim();
   const contactPhone = document.getElementById("contactPhone").value.trim();
   const bathrooms = Number(document.getElementById("bathrooms").value || 0);
@@ -290,6 +331,9 @@ async function submitProperty() {
     price_zmw:price,
     location,area,
 contact_phone:contactPhone,
+    latitude: latitude ? Number(latitude) : null,
+longitude: longitude ? Number(longitude) : null,
+maps_url: mapsUrl || null,
 bedrooms,bathrooms,
 photo_urls:photoUrls,
 status:"approved"
@@ -476,7 +520,18 @@ async function loadProperties() {
     description.textContent = property.description || "";
 
     details.append(tag, heading, place, rooms, price, description);
+if (property.maps_url || (property.latitude != null && property.longitude != null)) {
+  const locationLink = document.createElement("a");
 
+  locationLink.href = property.maps_url ||
+    `https://www.google.com/maps?q=${property.latitude},${property.longitude}`;
+
+  locationLink.textContent = "View Location";
+  locationLink.target = "_blank";
+  locationLink.rel = "noopener noreferrer";
+
+  details.appendChild(locationLink);
+  }
     if (property.contact_phone) {
       let phoneDigits = property.contact_phone.replace(/\D/g, "");
 
@@ -519,6 +574,12 @@ db.auth.onAuthStateChange(() => {
 
 refreshUser();
 loadProperties();
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const SUPABASE_URL = "https://biblnnyzdzeygxytsdsp.supabase.co";
 </script>
 </body>
 </html>
