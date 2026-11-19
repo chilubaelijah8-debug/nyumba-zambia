@@ -124,7 +124,13 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <label>Property photos (maximum 5)</label>
 <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple><button onclick="submitProperty()">Publish property</button>
 </section>
-
+<section id="managePanel" class="panel hidden">
+  <h2>Manage My Properties</h2>
+  <p class="small">Manage your advertisements, update their availability or remove them.</p>
+  <div id="myProperties">
+    <p>Your properties will appear here.</p>
+  </div>
+</section>
 <h2>Available properties</h2>
 <p class="small">Browse approved property advertisements.</p>
 <div id="properties" class="properties">
@@ -167,6 +173,8 @@ async function refreshUser() {
   document.getElementById("accountBtn").classList.toggle("hidden",!!user);
   document.getElementById("logoutBtn").classList.toggle("hidden",!user);
   document.getElementById("postPanel").classList.toggle("hidden",!user);
+  document.getElementById("managePanel").classList.toggle("hidden",!user);
+  if (user) await loadMyProperties();
 }
 
 async function register() {
@@ -298,6 +306,111 @@ message("Property published successfully! It is now visible to everyone.");
 }
 
 
+async function loadMyProperties() {
+  const container = document.getElementById("myProperties");
+
+  if (!currentUser) return;
+
+  container.textContent = "Loading your properties...";
+
+  const {data, error} = await db
+    .from("properties")
+    .select("*")
+    .eq("owner_id", currentUser.id)
+    .order("created_at", {ascending:false});
+
+  if (error) {
+    container.textContent = "Could not load your properties: " + error.message;
+    return;
+  }
+
+  if (!data.length) {
+    container.textContent = "You have not advertised any properties yet.";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  data.forEach(property => {
+    const item = document.createElement("div");
+    item.className = "notice";
+
+    const heading = document.createElement("h3");
+    heading.textContent = property.title;
+
+    const status = document.createElement("p");
+    status.textContent = "Status: " + property.availability_status;
+
+    item.append(heading, status);
+
+    async function updateStatus(newStatus) {
+      const {error} = await db
+        .from("properties")
+        .update({availability_status:newStatus})
+        .eq("id", property.id)
+        .eq("owner_id", currentUser.id);
+
+      if (error) {
+        message("Could not update property: " + error.message, true);
+        return;
+      }
+
+      message("Property status updated.");
+      await loadMyProperties();
+      await loadProperties();
+    }
+
+    if (property.availability_status !== "available") {
+      const availableButton = document.createElement("button");
+      availableButton.textContent = "Mark Available";
+      availableButton.onclick = () => updateStatus("available");
+      item.append(availableButton);
+    }
+
+    if (property.listing_type === "rent" &&
+        property.availability_status === "available") {
+      const rentedButton = document.createElement("button");
+      rentedButton.textContent = "Mark as Rented";
+      rentedButton.onclick = () => updateStatus("rented");
+      item.append(rentedButton);
+    }
+
+    if (property.listing_type === "sale" &&
+        property.availability_status === "available") {
+      const soldButton = document.createElement("button");
+      soldButton.textContent = "Mark as Sold";
+      soldButton.onclick = () => updateStatus("sold");
+      item.append(soldButton);
+    }
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete Listing";
+    deleteButton.onclick = async () => {
+      if (!confirm("Are you sure you want to permanently delete this listing?")) {
+        return;
+      }
+
+      const {error} = await db
+        .from("properties")
+        .delete()
+        .eq("id", property.id)
+        .eq("owner_id", currentUser.id);
+
+      if (error) {
+        message("Could not delete listing: " + error.message, true);
+        return;
+      }
+
+      message("Property listing deleted.");
+      await loadMyProperties();
+      await loadProperties();
+    };
+
+    item.append(deleteButton);
+    container.append(item);
+  });
+}
+
 async function loadProperties() {
   const container = document.getElementById("properties");
   container.textContent = "Loading properties...";
@@ -305,6 +418,7 @@ async function loadProperties() {
   let query = db.from("properties")
     .select("*")
     .eq("status", "approved")
+.eq("availability_status", "available")
     .order("created_at", {ascending:false});
 
   const location = document.getElementById("searchLocation").value.trim();
