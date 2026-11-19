@@ -1,4 +1,4 @@
-
+<header>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,6 +60,7 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <div class="nav">
 <div class="brand">NYUMBA <span>ZAMBIA</span></div>
 <div class="actions">
+<button onclick="shareNyumba()">Share</button>
 <button id="accountBtn" onclick="showAuth()">Register / Login</button>
 <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
 </div>
@@ -167,6 +168,26 @@ const SUPABASE_KEY = "sb_publishable_R1CpZS4BlRwNj1G_212xpQ_SgMhG21i";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+  async function shareNyumba() {
+  const shareData = {
+    title: "Nyumba Zambia",
+    text: "Find houses and properties across Zambia with Nyumba Zambia!",
+    url: "https://nyumba-zambia.chilubaelijah8.workers.dev"
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      alert("Nyumba link copied! You can now share it.");
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      alert("Unable to share right now. Please try again.");
+    }
+  }
+  }
   let propertyMap = null;
 let propertyMarker = null;
 
@@ -598,3 +619,4 @@ loadProperties();
 </script>
 </body>
 </html>
+</header>
