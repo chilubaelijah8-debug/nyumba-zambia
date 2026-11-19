@@ -16,7 +16,26 @@ header{background:#102b46;color:white;padding:18px}
 .brand{font-size:23px;font-weight:bold}
 .brand span{color:#f2b84b}
 button{background:#e8a832;color:#172b40;border:0;border-radius:7px;padding:12px 16px;font-weight:bold;cursor:pointer}
-input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccd5df;border-radius:7px;font-size:15px}
+:root {
+  color-scheme: light;
+}
+
+input,select,textarea {
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border:1px solid #ccd5df;
+  border-radius:7px;
+  font-size:15px;
+  color:#172b40;
+  background:#ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color:#667788;
+  opacity:1;
+}
 .hero{background:#183c5d;color:white;text-align:center;padding:48px 16px}
 .hero h1{font-size:32px}
 .hero p{color:#d5e2ed}
@@ -168,8 +187,8 @@ const SUPABASE_KEY = "sb_publishable_R1CpZS4BlRwNj1G_212xpQ_SgMhG21i";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-  shareNyumba() 
-  async function shareNyumba() {
+
+async function shareNyumba() {
   const shareData = {
     title: "Nyumba Zambia",
     text: "Find houses and properties across Zambia with Nyumba Zambia!",
@@ -180,15 +199,32 @@ let currentUser = null;
     if (navigator.share) {
       await navigator.share(shareData);
     } else {
-      await navigator.clipboard.writeText(shareData.url);
-      alert("Nyumba link copied! You can now share it.");
+      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
     }
   } catch (error) {
     if (error.name !== "AbortError") {
-      alert("Unable to share right now. Please try again.");
+      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
     }
   }
+}
+  const shareData = {
+    title: "Nyumba Zambia",
+    text: "Find houses and properties across Zambia with Nyumba Zambia!",
+    url: "https://nyumba-zambia.chilubaelijah8.workers.dev"
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      window.prompt("Copy your Nyumba Zambia link:", shareData.url);
+    }
   }
+}
   let propertyMap = null;
 let propertyMarker = null;
 
