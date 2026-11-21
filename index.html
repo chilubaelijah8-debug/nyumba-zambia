@@ -571,14 +571,16 @@ async function refreshUser() {
     subscription.expires_at &&
     new Date(subscription.expires_at) > new Date();
 
-  postPanel.classList.toggle("hidden", !subscriptionActive);
+  const isAdmin =
+  (user.email || "").toLowerCase() === "chilubaelijah8@gmail.com";
 
-  if (subscriptionActive) {
-    subscriptionPanel.classList.add("hidden");
-  } else {
-    subscriptionPanel.classList.remove("hidden");
-  }
+postPanel.classList.toggle("hidden", !subscriptionActive && !isAdmin);
 
+if (subscriptionActive || isAdmin) {
+  subscriptionPanel.classList.add("hidden");
+} else {
+  subscriptionPanel.classList.remove("hidden");
+}
   await loadMyProperties();
 }
 
