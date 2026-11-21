@@ -249,6 +249,57 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
     font-size:16px;
   }
   }
+  /* PREMIUM PROPERTY SEARCH */
+.premium-search {
+  width: 100%;
+  max-width: 950px;
+  margin: 28px auto 0;
+  padding: 16px;
+  background: #fff;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  gap: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.2);
+}
+
+.premium-search input,
+.premium-search select {
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #dce3ea;
+  border-radius: 9px;
+  background: #fff;
+  color: #183c5d;
+  font-size: 15px;
+}
+
+.premium-search button {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 9px;
+  background: #e49b32;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+@media(max-width:650px) {
+  .premium-search {
+    grid-template-columns: 1fr 1fr;
+    padding: 12px;
+  }
+
+  .premium-search input {
+    grid-column: 1 / -1;
+  }
+
+  .premium-search button {
+    grid-column: 1 / -1;
+  }
+  }
 </style>
 </head>
 <body>
@@ -267,14 +318,27 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <section class="hero">
 <h1>Find a place to call home.</h1>
 <p>Discover houses and properties across Zambia.</p>
-<div class="search">
-<input id="searchLocation" placeholder="Enter city or neighbourhood">
-<select id="searchType">
-<option value="all">Rent or sale</option>
-<option value="rent">For rent</option>
-<option value="sale">For sale</option>
+<div class="premium-search">
+  <input
+    id="searchLocation"
+    placeholder="📍 Enter city or neighbourhood"
+  >
+
+  <select id="searchType">
+    <option value="all">Rent or sale</option>
+    <option value="rent">For rent</option>
+    <option value="sale">For sale</option>
+  </select>
+
+  <select id="searchPropertyType">
+  <option value="all">All property types</option>
+  <option value="house">House</option>
+  <option value="apartment">Apartment</option>
+  <option value="flat">Flat</option>
+  <option value="commercial">Commercial property</option>
 </select>
-<button onclick="loadProperties()">Search</button>
+
+  <button onclick="loadProperties()">Search</button>
 </div>
 </section>
 
@@ -1046,10 +1110,12 @@ async function loadProperties() {
 
   const location = document.getElementById("searchLocation").value.trim();
   const type = document.getElementById("searchType").value;
-
+const propertyType = document.getElementById("searchPropertyType").value;
   if (location) query = query.ilike("location", "%" + location + "%");
   if (type !== "all") query = query.eq("listing_type", type);
-
+if (propertyType !== "all") {
+  query = query.eq("property_type", propertyType);
+  }
   const {data, error} = await query;
 
   if (error) {
