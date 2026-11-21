@@ -71,6 +71,84 @@ h2{color:#183c5d}
 footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:45px}
 .small{font-size:13px;color:#667788}
 @media(max-width:480px){.hero h1{font-size:26px}.search{display:block}}
+  /* NYUMBA ZAMBIA PREMIUM DESIGN */
+.hero {
+  background:
+    linear-gradient(90deg,rgba(10,29,48,.88),rgba(10,29,48,.38)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Levy_mwanawasa_stadium.jpeg");
+  background-size:cover;
+  background-position:center;
+  min-height:390px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:65px 18px;
+}
+
+.hero h1 {
+  max-width:750px;
+  font-size:42px;
+  line-height:1.2;
+  text-shadow:0 2px 8px #000;
+}
+
+.hero p {
+  font-size:18px;
+  text-shadow:0 2px 5px #000;
+}
+
+.explore {
+  margin:35px 0;
+}
+
+.explore-intro {
+  margin-bottom:20px;
+}
+
+.explore-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+
+.explore-card {
+  position:relative;
+  height:230px;
+  overflow:hidden;
+  border-radius:13px;
+  background:#183c5d;
+  box-shadow:0 5px 16px rgba(0,0,0,.12);
+}
+
+.explore-card img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .4s;
+}
+
+.explore-card:hover img {
+  transform:scale(1.06);
+}
+
+.explore-caption {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:35px 14px 15px;
+  color:white;
+  font-size:19px;
+  font-weight:bold;
+  background:linear-gradient(transparent,rgba(0,0,0,.85));
+}
+
+@media(max-width:480px) {
+  .hero {min-height:340px}
+  .hero h1 {font-size:30px}
+  .explore-card {height:200px}
+  }
 </style>
 </head>
 <body>
@@ -103,6 +181,57 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
 <main>
 <div id="message" class="notice hidden"></div>
 
+<section class="explore">
+  <div class="explore-intro">
+    <h2>Explore Zambia</h2>
+    <p class="small">Discover the places, landmarks and beautiful scenery that make Zambia special.</p>
+  </div>
+
+  <div class="explore-grid">
+
+    <div class="explore-card">
+      <img
+        src="https://commons.wikimedia.org/wiki/Special:FilePath/Levy_mwanawasa_stadium.jpeg"
+        alt="Levy Mwanawasa Stadium in Ndola"
+        loading="lazy">
+      <div class="explore-caption">
+        Levy Mwanawasa Stadium · Ndola
+      </div>
+    </div>
+
+    <div class="explore-card">
+      <img
+        src="https://commons.wikimedia.org/wiki/Special:FilePath/Lusaka.jpg"
+        alt="Lusaka city centre and Findeco House"
+        loading="lazy">
+      <div class="explore-caption">
+        Findeco House · Lusaka
+      </div>
+    </div>
+
+    <div class="explore-card">
+      <img
+        src="https://commons.wikimedia.org/wiki/Special:FilePath/Victoria_Falls_Zambia.jpg"
+        alt="Victoria Falls from the Zambian side"
+        loading="lazy">
+      <div class="explore-caption">
+        Victoria Falls · Livingstone
+      </div>
+    </div>
+
+    <div class="explore-card">
+      <img
+        src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900"
+        alt="African natural landscape"
+        loading="lazy">
+      <div class="explore-caption">
+        Discover Zambia's beauty
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section id="subscriptionPanel" class="panel hidden">
   <h2>Advertise with Nyumba Zambia</h2>
   <p>Choose a 30-day advertising package.</p>
@@ -114,10 +243,12 @@ footer{background:#102b46;color:white;text-align:center;padding:25px;margin-top:
     <option value="Premium">Premium - K100 / 30 days</option>
   </select>
 
-  <h3>Payment details</h3>
-  <p><strong>MTN Mobile Money:</strong> +260 760 387 200</p>
-  <p><strong>Airtel Money:</strong> +260 777 212 286</p>
-
+  <h3>Secure Mobile Money Payments</h3>
+<div class="notice">
+  <strong>Your payment is protected.</strong>
+  <p>Pay securely using MTN Mobile Money or Airtel Money.</p>
+  <p>Our secure payment checkout is being prepared. You will be able to complete payment directly from your phone.</p>
+</div>
   <label>Payment method</label>
   <select id="paymentMethod">
     <option value="MTN Mobile Money">MTN Mobile Money</option>
